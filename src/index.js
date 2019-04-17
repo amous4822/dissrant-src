@@ -6,7 +6,7 @@ import App from './App';
 import * as firebase from 'firebase'
 import * as serviceWorker from './serviceWorker';
 
-var config = {
+const config = {
     apiKey: "AIzaSyDA1TNXkaL3XXjiuCf7fOxamYqR4XVfg7o",
     authDomain: "dissrant-fc0c9.firebaseapp.com",
     databaseURL: "https://dissrant-fc0c9.firebaseio.com",

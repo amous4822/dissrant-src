@@ -3,8 +3,13 @@
   
   padding:15px;
   width:55%;
-  margin: 40px auto;
-   
+  margin: 40px auto; 
+}
+
+.card.post {
+    padding: 5px;
+    margin: 10px auto;
+    
 }
 
 textarea {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Input from './components/Input';
+import Input from './components/Users';
 
 class App extends Component {
   render() {
     return (
-      <Input/>
+      <User/>
     );
   }
 }
