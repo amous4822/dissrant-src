@@ -1,8 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import 'bootstrap/dist/css/bootstrap.css'
+import './App.css';
 import App from './App';
+import * as firebase from 'firebase'
 import * as serviceWorker from './serviceWorker';
+
+var config = {
+    apiKey: "AIzaSyDA1TNXkaL3XXjiuCf7fOxamYqR4XVfg7o",
+    authDomain: "dissrant-fc0c9.firebaseapp.com",
+    databaseURL: "https://dissrant-fc0c9.firebaseio.com",
+    projectId: "dissrant-fc0c9",
+    storageBucket: "",
+    messagingSenderId: "1004262125748"
+};
+
+firebase.initializeApp(config);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
