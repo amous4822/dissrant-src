@@ -1,9 +1,57 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.color-white{
+  background-color: rgb(214, 213, 213);
+  
+}
+
+
 
 .card {
   
   padding:15px;
-  width:55%;
+  width:30%;
+  border-color:white ;
   margin: 40px auto; 
+
+}
+
+.navbar{
+  width: 55%;
+  margin: auto;
+  border-radius: 5px;
+  
+}
+
+.Home .lander {
+  padding: 80px 0;
+  text-align: center;
+}
+
+.Home .lander h1 {
+  font-weight: 600;
+}
+
+.Home .lander p {
+  color: #999;
+}
+
+.navbar-nav li{
+  text-decoration: none
+}
+
+
+li a:link, a:visited {
+  padding: 6px;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+ li a:hover, a:active {
+  background-color: rgba(226, 224, 224, 0.795);
 }
 
 .card.post {
@@ -23,6 +71,5 @@ textarea {
 }
 
 .subbtn {
-  float:right;
-  
+  margin-top: 10px;
 }
