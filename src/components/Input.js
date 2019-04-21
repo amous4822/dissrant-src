@@ -15,7 +15,6 @@ export default class Input extends React.Component {
     componentDidMount(){
 
         const postRef = firebase.database().ref().child('react')
-        
         postRef.on("value", snap => {
             let post=[]
             snap.forEach(childSnap => {

@@ -15,18 +15,23 @@ class App extends Component {
     firebase.auth().onAuthStateChanged(user => {
       if(user){
         console.log("user:" , user)
-        this.setState({
-          isAuthenticated : true })
-
+        this.userHasAuthenticated(true)
       } else {
         console.log("not logged in")
-        this.setState({
-          isAuthenticated: false
-        })
-
+        this.userHasAuthenticated(false)
       }
     })
   }
+
+  // async componentDidMount(){
+  //   var user = await firebase.auth().currentUser;
+
+  //   if (user) {
+  //     this.userHasAuthenticated(true);
+  //   } else {
+  //     this.setState({isAuthenticated:false})
+  //   }
+  // }
 
   userHasAuthenticated = authenticated => {
     this.setState ({

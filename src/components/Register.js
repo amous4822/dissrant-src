@@ -12,14 +12,42 @@ export class Register extends Component {
     console.log(email, password,groupCode,userName)
 
     firebase.auth().createUserWithEmailAndPassword(email,password)
+    .then(() => {
+      this.createUserNode(groupCode,userName)
+    })
       .catch(e => {
-        console.log(e.message)
+        alert(e.message) 
+    })
+  }
+
+  createUserNode = (groupCode,userName) => {
+    const user = firebase.auth().currentUser
+    if(user){
+      user.updateProfile({
+        displayName : userName,
       })
+      // const Uid = user.uid
+      // firebase.database().ref('users/' + Uid).set({
+      //   groupCode:groupCode,
+      // })
+      // const addToGroup = firebase.database().ref('rooms/' + groupCode + '/members').set({
+      // })
+      // console.log("group Details: ",addToGroup)
+
+      const postRef = firebase.database().ref()
+        .child('rooms/' + groupCode + "/members")
+        .once("value").then(() => {
+          let newChild = postRef.push()
+          newChild.set(user.displayName)
+        })
+    }
   }
 
   render() {
   
     return (
+      <div>
+      
       <div className="card shadow-lg">
         <form onSubmit = {this.registerMail}>
 
@@ -45,6 +73,7 @@ export class Register extends Component {
 
           <button className="btn btn-primary">Register</button>
         </form>
+      </div>
       </div>
 
     )
