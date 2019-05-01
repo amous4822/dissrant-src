@@ -1,10 +1,9 @@
 import React from 'react'
 import * as firebase from 'firebase'
-export default class Login extends React.Component {
+import {Redirect} from 'react-router-dom'
 
-    // constructor(props){
-    //     super(props)
-    // }
+
+export default class Login extends React.Component {
 
     addEmail= (e) => {
 
@@ -18,13 +17,26 @@ export default class Login extends React.Component {
             .then( () => {
                 this.props.userHasAuthenticated(true)
             })
-            .catch(e => {console.log(e.message)})
+            .catch(e => {alert(e.message)})
     }
+
+    renderRedirect = () => {
+
+        if (this.props.isAuthenticated) {
+            
+          return <Redirect to = {{
+            pathname: '/messaging',
+            }} 
+            />
+        }
+      }
 
     render(){
         return (
             
             <div className="card">
+
+                {this.renderRedirect()}
                 <form onSubmit = {this.addEmail}>
                     <div className="form-group">
                         <label htmlFor="exampleInputEmail1"><strong>Email</strong></label>

@@ -1,7 +1,20 @@
 import React, { Component } from 'react'
 import * as firebase from "firebase";
+import {Redirect} from 'react-router-dom'
+
+
 
 export class Register extends Component {
+
+
+  constructor(props){
+    super(props)
+
+    this.state = {
+      redirect:false,
+      groupCode:'',
+    }
+  }
 
   registerMail= async (e) => {
     e.preventDefault()
@@ -9,44 +22,71 @@ export class Register extends Component {
     const password = e.target.elements.InputPassword1.value;
     const groupCode = e.target.elements.groupCode.value;
     const userName = e.target.elements.userName.value;
-    console.log(email, password,groupCode,userName)
-
-    firebase.auth().createUserWithEmailAndPassword(email,password)
-    .then(() => {
-      this.createUserNode(groupCode,userName)
+    this.setState({
+      groupCode:groupCode
     })
+
+    const postRef = firebase.database().ref().child('rooms/' + groupCode + "/members")
+        
+      postRef.once("value").then((snap) => {
+
+        if(snap.val() != null){
+          let users=[]
+          snap.forEach(childSnap => {
+            users.push(childSnap.val())
+          })
+
+          if(users.includes(userName)){
+            alert("Another user with the same username is already present in the group")
+          } else {
+            this.createUser(email, password, userName, postRef, groupCode)
+          }
+        } else {
+          this.createUser(email, password, userName, postRef,groupCode)
+        }
+
+      })
+  }
+
+  createUser = async (email, password , username, postRef, groupCode)=> {
+
+    await firebase.auth().createUserWithEmailAndPassword(email,password)
       .catch(e => {
         alert(e.message) 
     })
+
+    if(firebase.auth().currentUser != null){
+      
+      firebase.auth().currentUser.updateProfile({
+        displayName : username+ "~" + groupCode,
+      })
+    
+      let newChild = postRef.push()
+      newChild.set(username)
+
+      this.setState({
+        redirect: true
+      })
+    }
   }
 
-  createUserNode = (groupCode,userName) => {
-    const user = firebase.auth().currentUser
-    if(user){
-      user.updateProfile({
-        displayName : userName,
-      })
-      // const Uid = user.uid
-      // firebase.database().ref('users/' + Uid).set({
-      //   groupCode:groupCode,
-      // })
-      // const addToGroup = firebase.database().ref('rooms/' + groupCode + '/members').set({
-      // })
-      // console.log("group Details: ",addToGroup)
+  renderRedirect = () => {
 
-      const postRef = firebase.database().ref()
-        .child('rooms/' + groupCode + "/members")
-        .once("value").then(() => {
-          let newChild = postRef.push()
-          newChild.set(user.displayName)
-        })
+    if (this.state.redirect) {
+      return <Redirect to={{
+        pathname: '/messaging',
+        state: { groupCode: this.state.groupCode }
+        }}
+      />
     }
   }
 
   render() {
-  
+
     return (
       <div>
+
+        {this.renderRedirect()}
       
       <div className="card shadow-lg">
         <form onSubmit = {this.registerMail}>
@@ -73,7 +113,10 @@ export class Register extends Component {
 
           <button className="btn btn-primary">Register</button>
         </form>
+
+        
       </div>
+    
       </div>
 
     )

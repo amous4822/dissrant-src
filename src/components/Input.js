@@ -1,35 +1,45 @@
 import React from 'react'
 import Posts from './Posts'
 import * as firebase from 'firebase'
+
+
+
 export default class Input extends React.Component {
 
     constructor(props){
         super(props)
 
-        //this.postRef = rootRef.child('posts')
         this.state = {
+            groupCode: "",
             posts:[],
         }
+
+        this.unsubscribe = firebase.auth().onAuthStateChanged((user) => this.setGroupCode(user))        
     }
 
-    componentDidMount(){
+    setGroupCode = (user) => {
+        this.setState({
+            groupCode: user.displayName.split("~")[1]
+        })
 
-        const postRef = firebase.database().ref().child('react')
+        const postRef = firebase.database().ref().child( 'rooms/' + this.state.groupCode + '/posts' )
         postRef.on("value", snap => {
-            let post=[]
-            snap.forEach(childSnap => {
-                post.push(childSnap.val())
-            })
+        let post=[]
+        snap.forEach(childSnap => {
+            post.push(childSnap.val())
+        })
             this.setState({
                 posts : post
             })
         })
+        this.unsubscribe()
     }
+
 
     handlePostInput =(e)=> {
 
         e.preventDefault()
-        const postRef = firebase.database().ref().child('react')
+        const postRef = firebase.database().ref().child( 'rooms/' + this.state.groupCode + '/posts'  )
         const newPost = e.target.elements.newPost.value
 
         let newChild = postRef.push()
@@ -47,6 +57,7 @@ export default class Input extends React.Component {
     render (){
         return (
             <div>
+                
                 <Posts allPosts = {this.state.posts}/>
                 <div className= "card shadow-lg">
                     <form onSubmit={this.handlePostInput}>

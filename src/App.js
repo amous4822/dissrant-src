@@ -9,18 +9,22 @@ class App extends Component {
     super(props)
 
     this.state = {
-      isAuthenticated : false,
+      isAuthenticated : "",
+      
     }
 
     firebase.auth().onAuthStateChanged(user => {
       if(user){
         console.log("user:" , user)
         this.userHasAuthenticated(true)
+
       } else {
         console.log("not logged in")
         this.userHasAuthenticated(false)
+
       }
     })
+    
   }
 
   // async componentDidMount(){
@@ -33,18 +37,16 @@ class App extends Component {
   //   }
   // }
 
-  userHasAuthenticated = authenticated => {
+  userHasAuthenticated = (authenticated) => {
     this.setState ({
-      isAuthenticated : authenticated
+      isAuthenticated : authenticated,
+      
     })
 
   }
 
   handleLogout =() => {
-    
-    firebase.auth().signOut()
-
-    
+    firebase.auth().signOut() 
   }
 
   render() {
@@ -64,6 +66,7 @@ class App extends Component {
 
             <React.Fragment>
               <li onClick={this.handleLogout}><a href="/">Logout</a></li>
+              <li><a href="/messaging">Posts</a></li>
             </React.Fragment> :
 
             <React.Fragment>   
