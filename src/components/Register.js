@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import * as firebase from "firebase";
 import {Redirect} from 'react-router-dom'
 
-
-
 export class Register extends Component {
-
 
   constructor(props){
     super(props)
@@ -28,24 +25,24 @@ export class Register extends Component {
 
     const postRef = firebase.database().ref().child('rooms/' + groupCode + "/members")
         
-      postRef.once("value").then((snap) => {
+    postRef.once("value").then((snap) => {
 
-        if(snap.val() != null){
-          let users=[]
-          snap.forEach(childSnap => {
-            users.push(childSnap.val())
-          })
+      if(snap.val() != null){
+        let users=[]
+        snap.forEach(childSnap => {
+          users.push(childSnap.val())
+        })
 
-          if(users.includes(userName)){
-            alert("Another user with the same username is already present in the group")
-          } else {
-            this.createUser(email, password, userName, postRef, groupCode)
-          }
+        if(users.includes(userName)){
+          alert("Another user with the same username is already present in the group")
         } else {
-          this.createUser(email, password, userName, postRef,groupCode)
+          this.createUser(email, password, userName, postRef, groupCode)
         }
+      } else {
+        this.createUser(email, password, userName, postRef,groupCode)
+      }
 
-      })
+    })
   }
 
   createUser = async (email, password , username, postRef, groupCode)=> {
@@ -53,11 +50,12 @@ export class Register extends Component {
     await firebase.auth().createUserWithEmailAndPassword(email,password)
       .catch(e => {
         alert(e.message) 
+        firebase.auth().signOut() 
     })
 
     if(firebase.auth().currentUser != null){
       
-      firebase.auth().currentUser.updateProfile({
+      await firebase.auth().currentUser.updateProfile({
         displayName : username+ "~" + groupCode,
       })
     
@@ -65,7 +63,7 @@ export class Register extends Component {
       newChild.set(username)
 
       this.setState({
-        redirect: true
+        redirect:true
       })
     }
   }
@@ -76,8 +74,7 @@ export class Register extends Component {
       return <Redirect to={{
         pathname: '/messaging',
         state: { groupCode: this.state.groupCode }
-        }}
-      />
+      }} />
     }
   }
 
@@ -86,8 +83,8 @@ export class Register extends Component {
     return (
       <div>
 
-        {this.renderRedirect()}
-      
+      {this.renderRedirect()}
+
       <div className="card shadow-lg">
         <form onSubmit = {this.registerMail}>
 
@@ -114,9 +111,8 @@ export class Register extends Component {
           <button className="btn btn-primary">Register</button>
         </form>
 
-        
       </div>
-    
+          
       </div>
 
     )

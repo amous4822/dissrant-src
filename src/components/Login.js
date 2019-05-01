@@ -25,7 +25,7 @@ export default class Login extends React.Component {
         if (this.props.isAuthenticated) {
             
           return <Redirect to = {{
-            pathname: '/messaging',
+                pathname: '/messaging',
             }} 
             />
         }

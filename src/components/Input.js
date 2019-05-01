@@ -11,6 +11,7 @@ export default class Input extends React.Component {
 
         this.state = {
             groupCode: "",
+            username: "",
             posts:[],
         }
 
@@ -18,8 +19,11 @@ export default class Input extends React.Component {
     }
 
     setGroupCode = (user) => {
+
+        if(user.displayName){
         this.setState({
-            groupCode: user.displayName.split("~")[1]
+            groupCode: user.displayName.split("~")[1],
+            username: user.displayName.split("~")[0],
         })
 
         const postRef = firebase.database().ref().child( 'rooms/' + this.state.groupCode + '/posts' )
@@ -34,13 +38,14 @@ export default class Input extends React.Component {
         })
         this.unsubscribe()
     }
+    }
 
 
     handlePostInput =(e)=> {
 
         e.preventDefault()
         const postRef = firebase.database().ref().child( 'rooms/' + this.state.groupCode + '/posts'  )
-        const newPost = e.target.elements.newPost.value
+        const newPost = this.state.username+": " + e.target.elements.newPost.value
 
         let newChild = postRef.push()
         newChild.set(newPost)
