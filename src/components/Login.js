@@ -10,7 +10,7 @@ export default class Login extends React.Component {
         e.preventDefault()
         const email = e.target.elements.exampleInputEmail1.value;
         const password = e.target.elements.exampleInputPassword1.value;
-        console.log(email, password)
+        //console.log(email, password)
 
         const auth = firebase.auth()
         auth.signInWithEmailAndPassword(email,password)

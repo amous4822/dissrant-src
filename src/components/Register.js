@@ -18,6 +18,7 @@ export class Register extends Component {
     const email = e.target.elements.InputEmail1.value;
     const password = e.target.elements.InputPassword1.value;
     const groupCode = e.target.elements.groupCode.value;
+    
     const userName = e.target.elements.userName.value;
     this.setState({
       groupCode:groupCode

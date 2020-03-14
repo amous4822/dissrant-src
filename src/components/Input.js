@@ -1,8 +1,7 @@
 import React from 'react'
 import Posts from './Posts'
 import * as firebase from 'firebase'
-
-
+import {Redirect} from 'react-router-dom'
 
 export default class Input extends React.Component {
 
@@ -59,9 +58,22 @@ export default class Input extends React.Component {
         e.target.elements.newPost.value=""
     }
 
+    renderRedirect = () => {
+
+        if (!this.props.isAuthenticated) {
+            
+          return <Redirect to = {{
+                pathname: '/login',
+            }} 
+            />
+        }
+      }
+
     render (){
         return (
             <div>
+
+                {this.renderRedirect()}
                 
                 <Posts allPosts = {this.state.posts}/>
                 <div className= "card shadow-lg">

@@ -12,7 +12,7 @@ export default ({ authProps }) =>
     <AppliesRoutes path="/" exact component={Home} />
     <AppliesRoutes props={authProps} path="/login" exact component={Login} />
     <AppliesRoutes props={authProps} path="/register" exact component={Register} />
-    <AppliesRoutes path="/messaging" exact component={Input} />
+    <AppliesRoutes props={authProps} path="/messaging" exact component={Input} />
     <Route /*component={NotFound}*/ />
     
 

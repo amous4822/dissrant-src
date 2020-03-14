@@ -3,6 +3,8 @@ import {Link } from 'react-router-dom'
 import Routes from './components/Routes'
 import * as firebase from 'firebase'
 
+const baseURL = "https://amous4822.github.io/test-deploy/#/";
+
 class App extends Component {
 
   constructor(props){
@@ -26,21 +28,10 @@ class App extends Component {
     })
     
   }
-
-  // async componentDidMount(){
-  //   var user = await firebase.auth().currentUser;
-
-  //   if (user) {
-  //     this.userHasAuthenticated(true);
-  //   } else {
-  //     this.setState({isAuthenticated:false})
-  //   }
-  // }
-
+  
   userHasAuthenticated = (authenticated) => {
     this.setState ({
       isAuthenticated : authenticated,
-      
     })
 
   }
@@ -65,13 +56,13 @@ class App extends Component {
           this.state.isAuthenticated ? 
 
             <React.Fragment>
-              <li onClick={this.handleLogout}><a href="/">Logout</a></li>
-              <li><a href="/messaging">Posts</a></li>
+              <li onClick={this.handleLogout}><a href={baseURL}>Logout</a></li>
+              <li><a href={baseURL+"messaging"} >Posts</a></li>
             </React.Fragment> :
 
             <React.Fragment>   
-              <li><a href="/login">Login</a></li>    
-              <li><a href="/register">Signup</a></li>
+              <li><a href={baseURL+"login"}>Login</a></li>    
+              <li><a href={baseURL+"register"}>Signup</a></li>
             </React.Fragment>
         }
         </ul>
